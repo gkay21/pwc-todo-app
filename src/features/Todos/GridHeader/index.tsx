@@ -39,7 +39,21 @@ const GridHeader = () => {
             />
           ))}
       </Header>
-      <Header>Todo</Header>
+      <Header onClick={() => handleSort(SortKey.title)}>
+        Todo
+        {sortKey === SortKey.title &&
+          (isAscending ? (
+            <FontAwesomeIcon
+              icon={faChevronUp}
+              style={{ marginLeft: "5px", marginRight: "-5px" }}
+            />
+          ) : (
+            <FontAwesomeIcon
+              icon={faChevronDown}
+              style={{ marginLeft: "5px", marginRight: "-5px" }}
+            />
+          ))}
+      </Header>
       <Header onClick={() => handleSort(SortKey.done)}>
         Completed
         {sortKey === SortKey.done &&

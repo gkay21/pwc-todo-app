@@ -11,6 +11,7 @@ export interface Task {
 
 export enum SortKey {
   priority = "PRIORITY",
+  title = "TITLE",
   done = "DONE",
 }
 
@@ -77,11 +78,22 @@ export const todoSlice = createSlice({
 export const { add, edit, remove, sort } = todoSlice.actions;
 
 const compare = (a: Task, b: Task, key: SortKey, isAscending: boolean) => {
+  let comparison = 0;
   if (key === SortKey.priority) {
     if (!isAscending) {
       return b.priority - a.priority;
     }
     return a.priority - b.priority;
+  }
+  if (key === SortKey.title) {
+    if (a.title.toLowerCase() > b.title.toLowerCase()) {
+      comparison = 1;
+    } else if (a.title.toLowerCase() < b.title.toLowerCase()) {
+      comparison = -1;
+    }
+    if (!isAscending) {
+      comparison *= -1;
+    }
   }
   if (key === SortKey.done) {
     if (!isAscending) {
@@ -89,7 +101,7 @@ const compare = (a: Task, b: Task, key: SortKey, isAscending: boolean) => {
     }
     return Number(b.done) - Number(a.done);
   }
-  return -1;
+  return comparison;
 };
 
 // The function below is called a selector and allows us to select a value from
